@@ -3,19 +3,21 @@ name: Build Container
 on:
   push:
     branches:
-      - master
       - develop
-      - kopff
-      - release23
-      - release33
-      - release40
+
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   build:
     name: Build Containers
-    if: github.repository == 'xibosignage/xibo-cms'
     runs-on: ubuntu-22.04
     steps:
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -33,26 +35,14 @@ jobs:
 
       # Latest
       - name: Build Latest
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/develop'
         uses: docker/build-push-action@v5
         with:
           context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ghcr.io/xibosignage/xibo-cms:latest
-          build-args: GIT_COMMIT=${{ github.sha }}
-          push: true
-          load: false
-
-      # Release branch
-      - name: Build Branch
-        if: github.ref != 'refs/heads/master'
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: ghcr.io/xibosignage/xibo-cms:${{ github.ref_name }}
+          tags: ghcr.io/store-genius/xibo-xmr:latest
+          platforms: linux/amd64,linux/arm64
           build-args: GIT_COMMIT=${{ github.sha }}
           push: true
           load: false
