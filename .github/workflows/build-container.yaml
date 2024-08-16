@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Latest
-      - name: Build Latest
+      - name: Builds Latest
         if: github.ref == 'refs/heads/develop'
         uses: docker/build-push-action@v5
         with:
