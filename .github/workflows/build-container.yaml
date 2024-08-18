@@ -12,7 +12,7 @@ permissions:
 jobs:
   build:
     name: Build Containers
-    runs-on: jetson-orin-cahlen
+    runs-on: ubuntu-22.04 #jetson-orin-cahlen
     steps:
 
       - name: Set up QEMU
@@ -41,7 +41,7 @@ jobs:
           context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ghcr.io/store-genius/xibo-xmr:latest
+          tags: ghcr.io/store-genius/xibo-xmc:latest
           platforms: linux/amd64,linux/arm64
           build-args: GIT_COMMIT=${{ github.sha }}
           push: true
